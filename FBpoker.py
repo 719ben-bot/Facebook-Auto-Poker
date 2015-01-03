@@ -53,7 +53,7 @@ class autoPoker(object):
       #if we have logged in
       if len(homepg_dtsg) > 1:
 
-         #set the loggin flag
+         #set the login flag
          self.loggedin = True
 
          #set the facebook digest
@@ -62,10 +62,10 @@ class autoPoker(object):
          #set the user id
          self.user_id = homepg_userid[1].split('"')[0]
 
-      #if we did not loggin correctly
+      #if we did not login correctly
       else:
 
-         #set the loggin flag
+         #set the login flag
          self.loggedin = False
 
 
@@ -187,22 +187,3 @@ class autoPoker(object):
 
          #remove the user
          self.blacklist.remove(poke_target)
-
-
-
-
-
-###usage example###
-
-#create the autoPoker
-myPoker = autoPoker("email@example.com", "password")
-
-#get the ids of people who have poked you
-myPoker.getPokeIds()
-
-#poke those users back
-usersPoked = myPoker.pokeUsersBack()
-
-#print the users poked
-for user in usersPoked:
-   print "Poked " + user.name
