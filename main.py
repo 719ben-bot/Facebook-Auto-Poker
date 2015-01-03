@@ -6,6 +6,12 @@ class user(object):
       self.id = id
       self.name = name
 
+#class for error messages
+class error(object):
+   def __init__(self, id, name):
+      self.id = id
+      self.name = name
+
 #class for the autoPoker
 class autoPoker(object):
 
@@ -36,7 +42,8 @@ class autoPoker(object):
       }
 
       #homepage data
-      homepg = self.session.post("https://m.facebook.com/login.php", headers=hdr, data=data)
+      homepg = self.session.post("https://m.facebook.com/login.php",
+         headers=hdr, data=data)
       homepg = homepg.text.encode('utf8')
 
       #split up the text to get the digest and current user id
@@ -114,7 +121,8 @@ class autoPoker(object):
             + "FLFwxBxCbzESu48jhHximmey8szoyfw&fb_dtsg=" + self.fb_dtsg)
 
          #make the post request
-         self.session.post("https://www.facebook.com/pokes/inline/", data=data)
+         response = self.session.post("https://www.facebook.com/pokes/inline/",
+            data=data).text
 
          #if the user we want to poke is in the pokeTargets
          if poke_target in self.pokeTargets:
@@ -122,8 +130,27 @@ class autoPoker(object):
             #remove that id from the poke targets
             self.pokeTargets.remove(poke_target)
 
-         #return the user that was poked
+         #get error messages (if there is one)
+         error = response[27:34]
+
+         #if the user has already been poked
+         if error == "1769004":
+            pokeError = error("1769004", "Already Poked")
+            return pokeError
+
+         #if the user is not allowed to be poked
+         elif error == "1769005":
+            pokeError = error("1769005", "Unauthorized Poke")
+            return pokeError
+
+         #if there is another error
+         elif response[20:25] == "error":
+            pokeError = error("0000000", "Unknown Error")
+            return pokeError
+
+         #if there are no errors, return the poke target
          return poke_target
+
 
 
    #poke all users back
@@ -144,11 +171,13 @@ class autoPoker(object):
       #return a list of users that was poked
       return pokedList
 
+
    #add user to the blacklist
    def addToBlacklist(self, poke_target):
 
       #add to the blacklist
       self.blacklist.append(poke_target)
+
 
    #remove user from the blacklist
    def removeFromBlacklist(self, poke_target):
