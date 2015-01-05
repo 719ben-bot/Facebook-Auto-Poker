@@ -99,8 +99,18 @@ class autoPoker(object):
             #create a new poke target user
             pokeTarget = user(pokeId, pokeName)
 
+            #set the blackList bool
+            onBlacklist = False
+
+            #go throught to see if it is in blacklist
+            for buser in self.blacklist:
+
+               #if the user is on the blacklist change the bool
+               if buser.id == pokeTarget.id:
+                  onBlacklist = True
+
             #if the user is someone we want to poke back
-            if pokeId not in self.blacklist:
+            if not onBlacklist:
 
                #add the target to the array
                pokeTargets.append(pokeTarget)
@@ -112,8 +122,18 @@ class autoPoker(object):
    #poke a single user
    def pokeUser(self, poke_target):
 
+      #set the blackList bool
+      onBlacklist = False
+
+      #go throught to see if it is in blacklist
+      for buser in self.blacklist:
+
+         #if the user is on the blacklist change the bool
+         if buser.id == poke_target.id:
+            onBlacklist = True
+
       #if the user is not on the blacklist and logged in
-      if poke_target.id not in self.blacklist and self.loggedin:
+      if not onBlacklist and self.loggedin:
 
          #input for the poke
          data = ("__a=1&poke_target=" + poke_target.id + "&__user=" +

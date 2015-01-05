@@ -30,7 +30,9 @@ if myPoker.loggedin:
    #add the user to the blackList
    myPoker.addToBlacklist(blacklistUser)
 
-   #loop
+   print "Waiting to poke:"
+
+   #loop forever
    while True:
 
       #get the ids of people who have poked you
@@ -46,4 +48,4 @@ if myPoker.loggedin:
          print "Poked " + user.name + " : " + user.id
 
 else:
-   print "Invalid to login"
+   print "Unable to login"
