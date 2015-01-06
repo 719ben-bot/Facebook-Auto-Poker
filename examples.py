@@ -14,7 +14,7 @@ if myPoker.loggedin:
    myPoker.pokeUser(pokeTarget)
 
 else:
-   print "Unable to login"
+   print("Unable to login")
 
 
 ###continuous auto poking###
@@ -30,7 +30,7 @@ if myPoker.loggedin:
    #add the user to the blackList
    myPoker.addToBlacklist(blacklistUser)
 
-   print "Waiting to poke:"
+   print("Waiting to poke:")
 
    #loop forever
    while True:
@@ -45,7 +45,7 @@ if myPoker.loggedin:
       for user in usersPoked:
 
          #print the user name & id and number of pokes.
-         print "Poked " + user.name + " (" + user.id + ") " + user.count + " times."
+         print("Poked " + user.name + " (" + user.id + ") " + user.count + " times.")
 
 else:
-   print "Unable to login"
+   print("Unable to login")

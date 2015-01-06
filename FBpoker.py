@@ -44,8 +44,11 @@ class autoPoker(object):
 
       #homepage data
       homepg = self.session.post("https://m.facebook.com/login.php",
-         headers=hdr, data=data)
-      homepg = homepg.text.encode('utf8')
+         headers=hdr, data=data).text
+
+      #if the text is not a string, convert it to one (for python 2)
+      if type(homepg) != str:
+         homepg = homepg.encode('utf8')
 
       #split up the text to get the digest and current user id
       homepg_dtsg = homepg.split("fb_dtsg")
