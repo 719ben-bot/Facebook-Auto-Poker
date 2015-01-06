@@ -7,8 +7,8 @@ myPoker = FBpoker.autoPoker("email@example.com", "password")
 #if the login is valid (good idea to always check this)
 if myPoker.loggedin:
 
-   #create a new user. user(userid, name)
-   pokeTarget = FBpoker.user("4", "Mark Zuckerberg")
+   #create a new user. user(userid, name, poke count)
+   pokeTarget = FBpoker.user("4", "Mark Zuckerberg", "0")
 
    #poke the new user
    myPoker.pokeUser(pokeTarget)
@@ -24,8 +24,8 @@ myPoker = FBpoker.autoPoker("email@example.com", "password")
 #if the login is valid (good idea to always check this)
 if myPoker.loggedin:
 
-   #create a user to blacklist. user(userid, name)
-   blacklistUser = FBpoker.user("4", "Mark Zuckerberg")
+   #create a user to blacklist. user(userid, name, poke count)
+   blacklistUser = FBpoker.user("4", "Mark Zuckerberg", "0")
 
    #add the user to the blackList
    myPoker.addToBlacklist(blacklistUser)
@@ -44,8 +44,8 @@ if myPoker.loggedin:
       #print the users poked
       for user in usersPoked:
 
-         #print the user name & id
-         print "Poked " + user.name + " : " + user.id
+         #print the user name & id and number of pokes.
+         print "Poked " + user.name + " (" + user.id + ") " + user.count + " times."
 
 else:
    print "Unable to login"

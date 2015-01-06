@@ -2,9 +2,10 @@ import requests
 
 #class for the users for the auto poker
 class user(object):
-   def __init__(self, id, name):
+   def __init__(self, id, name, count):
       self.id = id
       self.name = name
+      self.count = count
 
 #class for error messages
 class error(object):
@@ -87,17 +88,23 @@ class autoPoker(object):
          #split up the text to get the names
          nameFind = pokePage.text.split('width="100" class="bl n" alt="')
 
+         #split up to find number of pokes
+         countFind = pokePage.text.split("poked you ")
+
          #go through each id and add them to postTargets
          for item in range(1,len(idFind)):
 
             #get the user to be poked id
             pokeId = idFind[item].split('"')[0]
 
+            #get the count of pokes
+            pokeCount = countFind[item].split(" ")[0]
+
             #get the user to be poked name
             pokeName = nameFind[item].split('"')[0]
 
             #create a new poke target user
-            pokeTarget = user(pokeId, pokeName)
+            pokeTarget = user(pokeId, pokeName, pokeCount)
 
             #set the blackList bool
             onBlacklist = False
