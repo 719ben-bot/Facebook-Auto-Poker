@@ -89,7 +89,7 @@ class autoPoker(object):
          idFind = pokePage.text.split('id="poke_live_item_')
 
          #split up the text to get the names
-         nameFind = pokePage.text.split('" alt="')
+         nameFind = pokePage.text.split('" alt="')[1:]
 
          #split up to find number of pokes
          countFind = pokePage.text.split("poked you ")
