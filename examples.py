@@ -1,4 +1,4 @@
-import FBpoker
+import FBpoker, getpass
 
 ###simple one time poke###
 #create the autoPoker
@@ -19,7 +19,7 @@ else:
 
 ###continuous auto poking###
 #create the autoPoker
-myPoker = FBpoker.autoPoker("email@example.com", "password")
+myPoker = FBpoker.autoPoker(input("Username: "), getpass.getpass())
 
 #if the login is valid (good idea to always check this)
 if myPoker.loggedin:

@@ -1,3 +1,5 @@
+#coding=utf-8
+from __future__ import unicode_literals, print_function
 import requests
 
 #class for the users for the auto poker
@@ -44,11 +46,135 @@ class autoPoker(object):
 
       #homepage data
       homepg = self.session.post("https://m.facebook.com/login.php",
-         headers=hdr, data=data).text
+         headers=hdr, data=data)
 
-      #if the text is not a string, convert it to one (for python 2)
-      if type(homepg) != str:
-         homepg = homepg.encode('utf8')
+      #if the user has two factor enabled
+      if homepg.url[0:33] == "https://m.facebook.com/checkpoint":
+
+         firthAuth = homepg.text
+
+         print("You have two factor authorization enabled.")
+
+         firstTimeAuth = True
+
+         #while we are on the security code page
+         while "Please enter the security code" in firthAuth:
+
+            if firstTimeAuth == False:
+               print("Incorrect authorization code.")
+            else:
+               firstTimeAuth = False
+
+            #python2.x
+            try:
+               authCode = raw_input("Please enter your two factor authorization code: ")
+
+            #python3.x
+            except NameError:
+               authCode = input("Please enter your two factor authorization code: ")
+
+            #in mobile
+            auth_nh = firthAuth.split('nh" value="')[1].split('"')[0]
+            auth_lsd = firthAuth.split('lsd" value="')[1].split('"')[0]
+
+            authData1 = {
+
+               "nh" : auth_nh,
+               "codes_submitted" : "0",
+               "approvals_code" : authCode,
+               "charset_test" : "€,´,€,´,水,Д,Є",
+               "lsd" : auth_lsd,
+               "submit[Submit Code]" : "Submit Code",
+            }
+
+            #header for auth
+            authHdr = {
+            "POST" : "/login/checkpoint/",
+            "HOST" : "m.facebook.com",
+            "User-Agent" : "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:33.0) Gecko/20100101 Firefox/33.0",
+            "Accept" : "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            }
+
+            #request for the security code
+            secondAuthPage = self.session.post("https://www.facebook.com/checkpoint/",
+               headers=authHdr, data=authData1)
+
+            firthAuth = secondAuthPage.text
+
+         #once we get the security code correct
+
+         authData2 = {
+            "name_action_selected" : "dont_save",
+            "submit[Continue]" : "Continue",
+            "lsd" : auth_lsd,
+            "nh" : auth_nh,
+            "charset_test" : "€,´,€,´,水,Д,Є"
+         }
+
+         #request for the login save
+         ThirdAuthPage = self.session.post("https://www.facebook.com/checkpoint/",
+            headers=authHdr, data=authData2)
+
+         #restore var names for rest of code
+         homepg = ThirdAuthPage
+      #end of auth case
+
+      #case for login review
+      if "Review Recent Login" in homepg.text:
+
+         reviewPage = homepg.text
+
+         #get the values for the post request
+         review_nh = reviewPage.split('nh" value="')[1].split('"')[0]
+         review_lsd = reviewPage.split('lsd" value="')[1].split('"')[0]
+
+         reviewData1 = {
+
+            "nh" : review_nh,
+            "charset_test" : "€,´,€,´,水,Д,Є",
+            "lsd" : review_lsd,
+            "submit[Continue]" : "Continue",
+         }
+
+         #header for auth
+         reviewHdr = {
+         "POST" : "/login/checkpoint/",
+         "HOST" : "m.facebook.com",
+         "User-Agent" : "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:33.0) Gecko/20100101 Firefox/33.0",
+         "Accept" : "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+         }
+
+         #request for the login review code
+         secondReview = self.session.post("https://www.facebook.com/checkpoint/",
+            headers=reviewHdr, data=reviewData1)
+
+         reviewData2 = {
+            "nh" : review_nh,
+            "charset_test" : "€,´,€,´,水,Д,Є",
+            "lsd" : review_lsd,
+            "submit[This is Okay]" : "This is Okay",
+         }
+
+         thirdReview = self.session.post("https://www.facebook.com/checkpoint/",
+            headers=reviewHdr, data=reviewData2)
+
+         #doesn't always ask to remember
+         if "Remember Browser" in thirdReview.text:
+
+            reviewData3 = {
+               "name_action_selected" : "dont_save",
+               "submit[Continue]" : "Continue",
+               "lsd" : review_lsd,
+               "nh" : review_nh,
+               "charset_test" : "€,´,€,´,水,Д,Є"
+            }
+
+            #final request to get to the homepage
+            homepg = self.session.post("https://www.facebook.com/checkpoint/",
+            headers=reviewHdr, data=reviewData3)
+      #end of login review case
+
+      homepg = homepg.text
 
       #split up the text to get the digest and current user id
       homepg_dtsg = homepg.split("fb_dtsg")
