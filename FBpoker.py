@@ -254,6 +254,8 @@ class autoPoker(object):
          #assign poke targets array
          self.pokeTargets = pokeTargets
 
+         return pokeTargets
+
 
    #poke a single user
    def pokeUser(self, poke_target):
@@ -324,7 +326,7 @@ class autoPoker(object):
          #add the user to the pokedList
          pokedList.append(user)
 
-      #return a list of users that was poked
+      #return a list of users that were poked
       return pokedList
 
 
