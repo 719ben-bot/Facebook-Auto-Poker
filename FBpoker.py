@@ -4,7 +4,7 @@ import requests
 
 #class for the users for the auto poker
 class user(object):
-   def __init__(self, id, name, count):
+   def __init__(self, id, name, count = 0):
       self.id = id
       self.name = name
       self.count = count
