@@ -18,6 +18,14 @@ class error(object):
 #class for the autoPoker
 class autoPoker(object):
 
+   headVars = {
+      "HOST" : "m.facebook.com",
+      "User-Agent" : '''Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:33.0)
+         Gecko/20100101 Firefox/33.0''',
+      "Accept" : '''text/html,application/xhtml+xml,application/
+         xml;q=0.9,*/*;q=0.8'''
+   }
+
    #create the autoPoke instance
    def __init__(self, email, password):
 
@@ -32,10 +40,10 @@ class autoPoker(object):
 
       #header variables that we need, without these we cannot login
       hdr = {
-      "POST" : "/login.php?refsrc=https%3A%2F%2Fm.facebook.com%2Fhome.php&refid=8 HTTP/1.1",
-      "HOST" : "m.facebook.com",
-      "User-Agent" : "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:33.0) Gecko/20100101 Firefox/33.0",
-      "Accept" : "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+         "POST" : "/login.php?refsrc=https://m.facebook.com/home.php HTTP/1.1",
+         "HOST" : self.headVars["HOST"],
+         "User-Agent" : self.headVars["User-Agent"],
+         "Accept" : self.headVars["Accept"]
       }
 
       #all we need is the email/password of the user for data
@@ -65,13 +73,15 @@ class autoPoker(object):
             else:
                firstTimeAuth = False
 
+            authMessage = "Please enter your two factor authorization code:"
+
             #python2.x
             try:
-               authCode = raw_input("Please enter your two factor authorization code: ")
+               authCode = raw_input(authMessage)
 
             #python3.x
             except NameError:
-               authCode = input("Please enter your two factor authorization code: ")
+               authCode = input(authMessage)
 
             #in mobile
             auth_nh = firthAuth.split('nh" value="')[1].split('"')[0]
@@ -89,15 +99,17 @@ class autoPoker(object):
 
             #header for auth
             authHdr = {
-            "POST" : "/login/checkpoint/",
-            "HOST" : "m.facebook.com",
-            "User-Agent" : "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:33.0) Gecko/20100101 Firefox/33.0",
-            "Accept" : "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+               "POST" : "/login/checkpoint/",
+               "HOST" : self.headVars["HOST"],
+               "User-Agent" : self.headVars["User-Agent"],
+               "Accept" : self.headVars["Accept"]
             }
 
+            checkpointURL = "https://www.facebook.com/checkpoint/"
+
             #request for the security code
-            secondAuthPage = self.session.post("https://www.facebook.com/checkpoint/",
-               headers=authHdr, data=authData1)
+            secondAuthPage = self.session.post(checkpointURL, headers=authHdr,
+               data=authData1)
 
             firthAuth = secondAuthPage.text
 
@@ -111,9 +123,11 @@ class autoPoker(object):
             "charset_test" : "€,´,€,´,水,Д,Є"
          }
 
+         checkpointURL = "https://www.facebook.com/checkpoint/"
+
          #request for the login save
-         ThirdAuthPage = self.session.post("https://www.facebook.com/checkpoint/",
-            headers=authHdr, data=authData2)
+         ThirdAuthPage = self.session.post(checkpointURL, headers=authHdr,
+            data=authData2)
 
          #restore var names for rest of code
          homepg = ThirdAuthPage
@@ -138,15 +152,17 @@ class autoPoker(object):
 
          #header for auth
          reviewHdr = {
-         "POST" : "/login/checkpoint/",
-         "HOST" : "m.facebook.com",
-         "User-Agent" : "Mozilla/5.0 (Macintosh; Intel Mac OS X 10.10; rv:33.0) Gecko/20100101 Firefox/33.0",
-         "Accept" : "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+            "POST" : "/login/checkpoint/",
+            "HOST" : self.headVars["HOST"],
+            "User-Agent" : self.headVars["User-Agent"],
+            "Accept" : self.headVars["Accept"]
          }
 
+         checkpointURL = "https://www.facebook.com/checkpoint/"
+
          #request for the login review code
-         secondReview = self.session.post("https://www.facebook.com/checkpoint/",
-            headers=reviewHdr, data=reviewData1)
+         secondReview = self.session.post(checkpointURL, headers=reviewHdr,
+            data=reviewData1)
 
          reviewData2 = {
             "nh" : review_nh,
@@ -155,8 +171,8 @@ class autoPoker(object):
             "submit[This is Okay]" : "This is Okay",
          }
 
-         thirdReview = self.session.post("https://www.facebook.com/checkpoint/",
-            headers=reviewHdr, data=reviewData2)
+         thirdReview = self.session.post(checkpointURL, headers=reviewHdr,
+            data=reviewData2)
 
          #doesn't always ask to remember
          if "Remember Browser" in thirdReview.text:
@@ -170,8 +186,8 @@ class autoPoker(object):
             }
 
             #final request to get to the homepage
-            homepg = self.session.post("https://www.facebook.com/checkpoint/",
-            headers=reviewHdr, data=reviewData3)
+            homepg = self.session.post(checkpointURL, headers=reviewHdr,
+               data=reviewData3)
       #end of login review case
 
       homepg = homepg.text

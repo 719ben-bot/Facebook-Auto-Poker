@@ -7,7 +7,6 @@ Features
 * Simple login using Facebook email & password
 * Choose who you poke back (Blacklist)
 * Auto poking & single user poking
-* Simple code design
 * Python 2.7 & 3.x support
 
 Getting started
@@ -96,7 +95,7 @@ FBpoker.removeFromBlacklist(target)
 ###user(FBID, name, poke_count = 0)
  - First Argument: Facebook user ID (http://findmyfacebookid.com/)
  - Second Argument: Facebook name
- - Third Argument: Current poke count (optional) (when creating your own user object, it does not need to be correct)
+ - Third Argument: Current poke count (optional)
  - Return: __User object__ that is used in blacklist creation
 ```python
 from FBpoker import user
@@ -115,7 +114,7 @@ userMark = error("1769004", "Already Poked")
 To Do
 --
 - [X] Blacklisting
-- [X] Python 3.x Support
+- [X] Python 2.7+ & 3.x Support
 - [X] Two Factor Login Authentication
 - [X] Random Login Message Fixes (please create an issue if you get one)
 - [ ] Poke Back Time Delay
