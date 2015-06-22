@@ -118,3 +118,18 @@ To Do
 - [X] Two Factor Login Authentication
 - [X] Random Login Message Fixes (please create an issue if you get one)
 - [ ] Poke Back Time Delay
+
+Contribution
+--
+
+I welcome all kinds of contribution.
+
+If you have any problem using Facebook-Auto-Poker, please file an issue in Issues.
+
+If you'd like to contribute on source, please upload a pull request in Pull Requests.
+
+
+License
+--
+
+MIT
