@@ -252,7 +252,12 @@ class autoPoker(object):
                 pokeId = idFind[item].split('"')[0]
 
                 # get the count of pokes
-                pokeCount = countFind[item].split(" ")[0]
+                try:
+                    pokeCount = countFind[item].split(" ")[0]
+
+                # if the poke count can't be found, the count is 1
+                except:
+                    pokeCount = 1
 
                 # get the user to be poked name
                 pokeName = nameFind[item].split('"')[0]
