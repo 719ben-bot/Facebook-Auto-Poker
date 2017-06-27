@@ -22,7 +22,7 @@ Now [Download the Zip](https://github.com/719Ben/Facebook-Auto-Poker/archive/mas
 Usage of FBpoker
 --
 
-###autoPoker(email, password)
+### autoPoker(email, password)
  - First Argument: Facebook username/email
  - Second Argument: Facebook password
  -Return: __autoPoker object__
@@ -50,7 +50,7 @@ target = FBpoker.user("4", "Mark Zuckerberg", "321")
 myPoker.pokeUser(target)
 ```
 
-#####getPokeIds()
+##### getPokeIds()
  - No Arguments
  - Gets all the users who have poked you. Sets them as .pokeTargets
  - Return: __List of user objects__ (see below) who have poked you
@@ -71,7 +71,7 @@ myPoker.getPokeIds()
 myPoker.pokeUsersBack()
 ```
 
-#####addToBlacklist(poke_target)
+##### addToBlacklist(poke_target)
  - First Argument: User object (see below) that you want to add to the blacklist
  - Adds a user to the blacklist of users you do not want to poke
 ```python
@@ -81,7 +81,7 @@ target = FBpoker.user("4", "Mark Zuckerberg", "321")
 FBpoker.addToBlacklist(target)
 ```
 
-#####removeFromBlacklist(poke_target)
+##### removeFromBlacklist(poke_target)
  - First Argument: User object (see below) that you want to remove from the blacklist
  - Removes a user from the blacklist of users you do not want to poke
 ```python
@@ -92,7 +92,7 @@ FBpoker.addToBlacklist(target)
 FBpoker.removeFromBlacklist(target)
 ```
 
-###user(FBID, name, poke_count = 0)
+### user(FBID, name, poke_count = 0)
  - First Argument: Facebook user ID (http://findmyfacebookid.com/)
  - Second Argument: Facebook name
  - Third Argument: Current poke count (optional)
@@ -102,7 +102,7 @@ from FBpoker import user
 userMark = user("4", "Mark Zuckerberg", "321")
 ```
 
-###error(id, name)
+### error(id, name)
  - First Argument: Facebook error ID
  - Second Argument: Error name
 ```python
